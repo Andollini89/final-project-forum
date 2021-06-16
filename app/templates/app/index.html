@@ -1,0 +1,40 @@
+{% extends 'app/layout.html'%}
+{% load static %}
+
+{% block link %}
+<link rel="stylesheet" href="{% static 'css/topic_page.css'%}">
+{% endblock %}
+{% block script %}
+<script src="{% static 'js/index.js'%}"></script>
+{% endblock %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block body %}
+
+    {% if topics %}
+        <div class="container p-5 card card-body bg-light shadow">
+            {% for topic in topics%}
+                <div class="card bg-transparent shadow m-1">
+                    <div class=" pl-2 pt-2">
+                        <h3><a class=" text-decoration-none" href="{% url 'topic' topic.id %}">{{topic.title}}</a></h3>
+                    </div>
+                    <div class="pl-2" >
+                        <p id="body-topic">{{topic.body|safe}}</p>
+                    </div>
+                    <div class="pl-2 d-flex">
+                        <div class="pr-2">
+                            <p>{{topic.timestamp}}</p>
+                        </div>
+                        <div class="pl-2">
+                            <p><a class="text-decoration-none" href="{% url 'profile' topic.author.username %}">{{topic.author.username}}</a></p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    
+{% endblock %}

@@ -1,0 +1,93 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+        {% block link%} {% endblock %}
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        
+        {% block script %} {% endblock %}
+        
+        <title>{% block title %}{% endblock %}</title>
+    </head>
+    <body>
+
+        <div>
+            <nav class="navbar navbar-expand-lg bg-dark navbar-dark ">
+                <!-- Brand -->
+                <a class="navbar-brand" href="{% url 'index' %}">Logo</a>
+              
+                <!-- Toggler/collapsibe Button -->
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+              
+                <!-- Navbar links -->
+                <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                  <ul class="navbar-nav">
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">Top Voted</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">Categories</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">All Topics</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'new_topic' %}">Make New Topic</a>
+                    </li>
+                  </ul>
+                  <ul class="navbar-nav d-flex align-items-center ml-auto">
+                      {% if user.is_authenticated %}
+                      <li class=" nav-link d-flex">
+                        <img class=" rounded-circle" src="{{MEDIA_URL}}{{user.img}}" alt="" width="35px" height="35px">
+                      </li>
+                      <li class=" nav-item">
+                          <a class="nav-link" href="{%url 'profile' user.username %}">{{user.username}}</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class=" nav-link" href="{% url 'logout'%}">Sign-out</a>
+                    </li>
+                    {% else %}
+                      <li class="nav-item">
+                          <a class=" nav-link" href="{% url 'login'%}">Log in </a>
+                        </li>
+                      <li class="nav-item">
+                        <a class=" nav-link" href="{% url 'register' %}">Register </a>
+                    </li>
+                    {% endif %}
+                  </ul> 
+                </div>
+              </nav>
+        </div>
+        <div class="container p-5 d-flex">
+          <div>
+              <form class=" form-inline" action="{% url 'search' %}" method="get">
+                  <input class=" form-control border-dark mr-2 shadow" type="text" name="query" id="q" placeholder="Search Topic" value="{{query}}">
+                  <button class=" btn btn-primary shadow" type="submit">Search</button>
+              </form>
+          </div>
+          {% if not user.is_authenticated%}
+          <div class="ml-auto d-flex ">
+              <form class="form-inline" action="{% url 'login'%}" method="post">
+                  {% csrf_token %}
+                  <input class=" form-control border-dark mr-2 shadow" type="text" name="username" placeholder="Username">
+                  <input class=" form-control border-dark mr-2 shadow" type="password" name="password" id="" placeholder="Password">
+                  <button class="btn btn-secondary shadow" type="submit">Log in</button>
+              </form>
+          </div>
+          {% endif %}
+      </div>
+        {% block body%}
+        {% endblock %}
+    </body>

@@ -1,0 +1,28 @@
+{% extends 'app/layout.html'%}
+{% load static %}
+
+{% block link %}
+<link rel="stylesheet" href="{% static 'topic_page.css'%}">
+{% endblock %}
+{% block script %}
+<script src="{% static 'index.js'%}"></script>
+{% endblock %}
+
+{% block title %}
+    Search
+{% endblock %}
+
+{% block body %}
+    <div class="container" style="min-height: 60vh !important;">
+    {% for topic in results %}
+        <div class="m-2 d-flex">
+            <a class="pr-5 text-decoration-none" href="{% url 'topic' topic.id %}"><strong>{{topic.title}}:</strong></a>
+            <p>{{ topic.body|safe }}</p>
+            <div class="ml-auto d-flex">
+                <p class="pr-4"><strong>{{topic.author.username}}</strong></p>
+                <p>{{topic.timestamp}}</p>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+{% endblock %}

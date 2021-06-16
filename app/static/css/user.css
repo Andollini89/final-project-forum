@@ -1,0 +1,17 @@
+.sfondo{
+    background-color: rgba(162, 185, 192, 0.753)
+}
+.edit{
+    font-size: larger;
+    color: rgb(40, 40, 167);
+}
+.delete{
+    color: rgb(179, 15, 15);
+    font-size: larger;
+}
+.cursor{
+    cursor: pointer;
+}
+.main-div{
+    display: flex;
+}

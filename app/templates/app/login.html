@@ -1,0 +1,23 @@
+{% extends 'app/layout.html' %}
+
+{% block body %}
+<div class="container">
+    <div class="row mt-4">
+        <div class="col-8 offset-3 text-center">
+            <form class="form-group w-75 card shadow" action="{% url 'login' %}" method="POST">
+                {% csrf_token %}
+                <div class="p-2 pt-5">
+                    <input class=" form-control" type="text" name="username" placeholder="Username">
+                </div>
+                
+                <div class="p-2">
+                    <input class=" form-control" type="password" name="password" placeholder="Password">
+                </div>
+                <div class="p-2">
+                    <button class="btn btn-primary" type="submit">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

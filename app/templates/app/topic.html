@@ -1,0 +1,85 @@
+{% extends 'app/layout.html'%}
+
+{% load static %}
+
+{% block link %}
+<link rel="stylesheet" href="{% static 'css/topic_page.css'%}">
+{% endblock %}
+{% block script %}
+<script src="{% static 'js/topic.js'%}"></script>
+{% endblock %}
+
+{% block title %}
+    Read Topic
+{% endblock %}
+
+{% block body %}
+{% if user.is_authenticated %}
+    <div class="container d-flex justify-content-between align-items-baseline">
+        {% if user == topic.author or user.is_staff %}
+        <div class="d-flex">
+            <div class="p-2">
+                <a href="#">Edit</a>
+            </div>
+            <div class="p-2">
+                <a href="#">Delete</a>
+            </div>
+        </div>
+        {% endif %}
+        <div class="d-flex ml-auto ">
+            <h5 class="pr-2">Answer to this post</h5>
+            <h5 class='pl-2 text-warning' id="plus"> + </h5>
+        </div>
+    </div>
+{% else %}
+<div class="container d-flex">
+    <div class="ml-auto">
+        <h5 class="pr-2">Login to answer</h5>
+    </div>
+</div>
+{% endif %}
+<div style="min-height: 400px;">
+    <div class=" mt-2 mb-2 p-3 container card bg-light shadow">
+        <div class="d-flex">
+            <h3>{{topic.title}}</h3>
+            <div class="ml-auto">
+                <div class="d-flex align-contents-center">
+                    <p class="pr-2"><a class="text-decoration-none" href="{% url 'profile' topic.author %}">{{topic.author}}</a></p>
+                    <p class="pl-2">{{topic.timestamp}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="pl-3">
+            {{topic.body|safe}}
+        </div>
+    </div>
+    {% for answer in answers %}
+    <div class="container card bg-light shadow mb-2" >
+        <div class="d-flex">
+            <div class="pt-2 pb-2">
+              <strong><a class="text-decoration-none" href="{% url 'profile' answer.responder %}">{{answer.responder}}</a></strong> Responded:
+            </div>
+            <div class="ml-auto pt-2 pb-2">
+                {{answer.timestamp}}
+            </div>
+        </div>
+        <div class="pl-3">
+            {{answer.answer|safe}}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+    <div class="container mt-3 mb-4 text-center" id="answer-form-div">
+        <div class="w-100 d-flex">
+            <h3 class="ml-auto" style="cursor: pointer;" onclick="showForm()" >
+            &#9746</h3>
+        </div>
+        <form class="w-100" action="{% url 'topic' topic.id %}" method="post">
+        {% csrf_token %}
+            {{answerForm.media}}
+            {{answerForm.as_p}}
+            <button class="btn btn-light" type="submit"> Submit</button>
+        </form>
+    </div>
+
+{% endblock %}

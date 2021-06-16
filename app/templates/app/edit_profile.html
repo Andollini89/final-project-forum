@@ -1,0 +1,31 @@
+{% extends 'app/layout.html'%}
+{% load static %}
+
+{% block link %}
+
+{% endblock %}
+{% block script %}
+<script src="{% static 'js/edit_profile.js'%}"></script>
+{% endblock %}
+
+{% block title %}
+    Edit
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="container form-group">
+        <form action="#" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="p-5">
+                {{form.media}}
+                {{form.as_p}}
+            </div>
+            <div class=" ml-3 pl-4">
+                <button class="btn btn-primary" type="submit">Save Profile</button>
+            </div>
+        </form>
+    </div>
+</div>
+    
+{% endblock %}

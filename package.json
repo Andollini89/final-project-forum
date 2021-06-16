@@ -1,0 +1,23 @@
+{
+  "name": "fourm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "8": "^0.0.1",
+    "@babel/core": "^7.14.6",
+    "@babel/preset-modules": "^0.1.4",
+    "autoprefix": "^1.0.1",
+    "autoprefixer": "^9.8.6",
+    "babelify": "^10.0.0",
+    "browserify": "^17.0.0",
+    "node-sass": "^6.0.0",
+    "postcss-cli": "^8.3.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

@@ -1,0 +1,17 @@
+{% extends 'app/layout.html' %}
+
+{% block body %}
+<div class="container form-group">
+    <form class="w-50" action="{% url 'new_topic' %}" method="POST">
+        {% csrf_token %}
+        <div class="p-5 pb-0">
+            {{form.media}}
+            {{form.as_p}}
+        </div>
+        <div class="pl-5">
+            <button class="btn btn-outline-primary" type="submit">Publish</button>
+        </div>
+        
+    </form>
+</div>
+{% endblock %}

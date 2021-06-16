@@ -1,0 +1,16 @@
+{% extends 'app/layout.html' %}
+
+{% block body %}
+    <div class="container text-center">
+        <div class="p-5 ml-5 mr-5 card card-body bg-warning bg-gradient">
+            <div class="p-5 ">
+                <h1>{{error_number}}</h1>
+            </div>
+            <div class="p3">
+                {% for line in message %}
+                    <h4>{{line}}</h4>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
