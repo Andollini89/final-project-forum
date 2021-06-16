@@ -77,6 +77,7 @@ def edit_profile(request, profile_id):
         profile = Profile.objects.get(pk=profile_id)
         edit = ProfileForm(request.POST, request.FILES, instance=profile)
         user = User.objects.get(pk=profile.user.id)
+        
         if edit.is_valid():
             edit.save()
             user.img = profile.image
