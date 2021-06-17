@@ -26,7 +26,7 @@
             </div>
             <div class="p-1 pb-4">
                 {% if profile.image %}
-                    <img src="{{MEDIA_URL}}{{profile.image}}" alt="" width="100%">
+                    <img class="rounded-circle" src="{{MEDIA_URL}}{{profile.image}}" alt="" width="250px" height="250px">
                 {% else %}
                     <img class="rounded-circle shadow" src="{{MEDIA_URL}}avatar.jpg" alt="" width="250px">
                 {% endif %}
@@ -56,23 +56,60 @@
                         </div>
                         <div class="d-flex">
                             <span id="edit-{{topic.id}}" 
+                            data-toggle="modal" data-target="#myModal"
                                 onclick="editTopic('{{topic.id}}')" 
                                 class=" mr-3 edit cursor">
                                 <i class="fas fa-edit"></i>
                             </span>
                             <span id="delete-{{topic.id))" 
+                            onclick="deleteConfirmation('{{topic.id}}')"
                                 class=" ml-2 delete cursor">
                                 <i class="fas fa-trash-alt"></i>
                             </span>
                         </div>
                     </div>
                     <div class="card-body" id="body{{topic.id}}">{{topic.body|safe}}</div>
+                    
                     <div class="card-footer">{{topic.timestamp}}</div>
                 </div>
                 
             {% endfor %}
+            
         </div>
+        
     </div>
+
+
+
+
+
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-xl">
+      
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+               <h4 class="modal-title">Edit Topic</h4>
+            </div>
+            <form id="editor" method="post" enctype="multipart/form-data">
+                {% csrf_token%}
+                <div class="modal-body text-center">
+                    <div>
+                        <div>
+                            {{form.media}}
+                            {{form.as_p}}
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <button class="btn btn-primary" type="submit">Edit Topic</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </form>
+        </div>
+      </div>
+    
 </div>    
     
     

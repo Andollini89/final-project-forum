@@ -18,6 +18,14 @@ class Topic(models.Model):
     closed = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
 
+    def serialize(self):
+        return {
+            'title':self.title,
+            'body': self.body,
+            'author':self.author,
+            'closed':self.closed
+        }
+
 
     def __str__(self):
         return self.author.username + " : " + self.title

@@ -25,6 +25,8 @@ def index(request):
         "topics" : topics, 
         "form": topic_form,
     })
+
+
 @login_required(login_url='login')
 def new_topic(request):
     if request.method == 'POST':
@@ -39,6 +41,9 @@ def new_topic(request):
         return render(request, "app/new_topic.html",{
             "form": TopicForm()
         })
+
+
+
 def topic_view(request, topic_id):
     topic = Topic.objects.get(pk=topic_id)
     
@@ -72,6 +77,8 @@ def topic_view(request, topic_id):
             
         })
 
+
+@login_required(login_url='login')
 def edit_profile(request, profile_id):
     if request.method == 'POST':
         profile = Profile.objects.get(pk=profile_id)
@@ -99,13 +106,12 @@ def user_profile_view(request, username):
     try:
         user = User.objects.get(username=username)
         profile = Profile.objects.get(user=user)
-        print(profile.user)
         return render(request, 'app/user_profile.html',{
             "profile" : profile,
             'topics':Topic.objects.filter(author= profile.user),
             
             # brake profile!!!!
-            #'form': EditTopicForm()
+            'form': BodyForm()
         })
     except:
         message = [" OOPS!!! ", "The Profile you are looking for does not exist!!"]
@@ -113,6 +119,35 @@ def user_profile_view(request, username):
             'error_number': 404,
             'message':message,                
         })
+
+
+@login_required(login_url='login')
+def edit_topic(request, topic_id):
+    if request.method == 'POST':
+        topic = Topic.objects.get(pk=topic_id)
+        form = BodyForm(request.POST, request.FILES, instance=topic)
+        
+        if form.is_valid():
+            form.save()
+    
+        return HttpResponseRedirect(reverse('profile', kwargs={
+        'username': topic.author.username,
+        }))
+    elif request.method == 'DELETE':
+        try:
+            data = json.loads(request.body)
+            topic = Topic.objects.get(pk=data['id'])
+            topic.delete()
+            return JsonResponse({'message': 'topic deleted'})
+        except:
+            return JsonResponse({'message': 'failed'})
+    else:
+        message = ['OOOPS!!', 'It seems that you are tring something you are not autorized to']
+        return render(request, 'app/oops.html',{
+            'error_number': 403,
+            'message' : message,
+        })
+
 
 def search_view(request):
     queryset = Topic.objects.all()
@@ -156,6 +191,8 @@ def login_view(request):
             })
     else:
         return render(request, "app/login.html")
+
+
 
 def register(request):
     if request.method == "POST":

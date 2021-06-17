@@ -14,5 +14,5 @@ urlpatterns = [
     path("search-results", views.search_view, name= 'search'),
     path('<str:username>-profile', views.user_profile_view, name='profile'),
     path('edit/<str:profile_id>', views.edit_profile, name='edit_profile'),
-    
+    path('edittopic/<str:topic_id>', views.edit_topic, name= 'edit_topic')
 ]+ static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)

@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from .models import *
 
 class ProfileForm(ModelForm):
+    image = forms.ImageField(widget=forms.FileInput)
     class Meta:
         model = Profile
         fields = '__all__'
@@ -23,4 +24,12 @@ class AnswerForm(ModelForm):
         fields =['answer']
         labels = {
             "answer": ""
+        }
+
+class BodyForm(ModelForm):
+    class Meta:
+        model = Topic
+        fields = ['body']
+        labels = {
+            'body': ''
         }
