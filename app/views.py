@@ -31,37 +31,53 @@ def index(request):
     })
 
 def closed_topics(request):
-
-    topics = Topic.objects.filter(closed=True).order_by('-timestamp')
-    paginator = Paginator(topics, 10)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    return render(request, "app/topic_list.html", {
-        'title': 'Closed Questions',
-        'topics' : page_obj,
-    })
+    try:
+        topics = Topic.objects.filter(closed=True).order_by('-timestamp')
+        paginator = Paginator(topics, 10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        return render(request, "app/topic_list.html", {
+            'title': 'Closed Questions',
+            'topics' : page_obj,
+        })
+    except:
+        return render(request, "app/topic_list.html", {
+            'title': 'All Topics',
+            'topics' : 'No topics to show!',
+        })
 
 def open_topics(request):
-
-    topics = Topic.objects.filter(closed=False).order_by('-timestamp')
-    paginator = Paginator(topics, 10)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    return render(request, "app/topic_list.html", {
-        'title': 'Open Questions',
-        'topics' : page_obj,
-    })
+    try:
+        topics = Topic.objects.filter(closed=False).order_by('-timestamp')
+        paginator = Paginator(topics, 10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        return render(request, "app/topic_list.html", {
+            'title': 'Open Questions',
+            'topics' : page_obj,
+        })
+    except:
+        return render(request, "app/topic_list.html", {
+            'title': 'All Topics',
+            'topics' : 'No topics to show!',
+        })
 
 def all_topics(request):
+    try:
+        topics = Topic.objects.all().order_by('-timestamp')
+        paginator = Paginator(topics, 10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        return render(request, "app/topic_list.html", {
+            'title': 'All Topics',
+            'topics' : page_obj,
+        })
+    except:
+        return render(request, "app/topic_list.html", {
+            'title': 'All Topics',
+            'topics' : 'No topics to show!',
+        })
 
-    topics = Topic.objects.all().order_by('-timestamp')
-    paginator = Paginator(topics, 10)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    return render(request, "app/topic_list.html", {
-        'title': 'All Topics',
-        'topics' : page_obj,
-    })
 
 
 def topic_view(request, topic_id):
