@@ -1,10 +1,10 @@
 {% extends 'app/layout.html' %}
 
 {% block body %}
-<div class="container form-group">
+<div class="container-lg container-xl form-group">
     <form class="w-50" action="{% url 'new_topic' %}" method="POST">
         {% csrf_token %}
-        <div class="p-5 pb-0">
+        <div class="p-lg-5 p-xl-5 pb-0">
             {{form.media}}
             {{form.as_p}}
         </div>

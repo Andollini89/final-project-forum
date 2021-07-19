@@ -1,8 +1,11 @@
+from enum import unique
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from ckeditor.fields import RichTextField
 from ckeditor.widgets import CKEditorWidget
 from ckeditor_uploader.fields import RichTextUploadingField
+from django.db.models.fields import IntegerField
+from django.db.utils import IntegrityError
 # Create your models here.
 
 
@@ -34,14 +37,42 @@ class Answer(models.Model):
     answer = RichTextUploadingField(blank=False, null=False)
     topic = models.ForeignKey(Topic,on_delete=models.CASCADE, related_name="topic")
     responder = models.ForeignKey(User, on_delete=models.CASCADE, related_name='responder')
+    correct = models.BooleanField(default=False)
+    votes = models.IntegerField(default=0)
     timestamp = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.topic.title + " : " + self.answer
 
+    def upvote(self, user):
+        try:
+            self.answer_votes.create(user=user, answer=self, vote_type='up')
+            self.votes += 1
+            self.save()
+        except IntegrityError:
+            return False
+        return True
+
+    def downvote(self, user):
+        try:
+            self.answer_votes.create(user=user, answer=self, vote_type='down')
+            self.votes -= 1
+            self.save()
+        except IntegrityError:
+            return False
+        return True
+
+
+class Votes(models.Model):
+    vote_type = models.CharField(max_length=255, null=True)
+    answer = models.ForeignKey(Answer, on_delete=models.CASCADE, related_name='answer_votes')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('user', 'answer', 'vote_type')
 
 class Profile(models.Model):
    
-    user = models.ForeignKey(User,on_delete=models.CASCADE, related_name= 'userprofile')
+    user = models.OneToOneField(User,on_delete=models.CASCADE, related_name= 'userprofile')
     
     username =models.CharField(max_length=255, null=False, blank=False)
     email= models.EmailField(max_length=255, blank=False, null=False)

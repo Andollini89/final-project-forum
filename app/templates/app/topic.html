@@ -14,72 +14,187 @@
 {% endblock %}
 
 {% block body %}
-{% if user.is_authenticated %}
-    <div class="container d-flex justify-content-between align-items-baseline">
-        {% if user == topic.author or user.is_staff %}
-        <div class="d-flex">
-            <div class="p-2">
-                <a href="#">Edit</a>
+{% if not topic.closed %}
+    <div id="commands">
+        {% if user.is_authenticated%}
+            <div class="container d-flex justify-content-between align-items-baseline">
+                
+                {% if user == topic.author or user.is_staff %}
+                <div class="pl-2">
+                    <h5 class="cursor" onclick="closeTopic('{{topic.id}}')">Close Topic</h5>
+                </div>
+                {% endif%}
+                <div class="d-flex ml-auto ">
+                    <h5 class="pr-2">Answer to this post</h5>
+                    <h5 class='pl-2 text-warning' id="plus"
+                    data-toggle="modal" data-target="#answer_modal"> + </h5>
+                </div>
             </div>
-            <div class="p-2">
-                <a href="#">Delete</a>
+        {% else %}
+        <div class="container d-flex">
+            <div class="ml-auto">
+                <h5 class="pr-2">Login to answer</h5>
             </div>
         </div>
         {% endif %}
-        <div class="d-flex ml-auto ">
-            <h5 class="pr-2">Answer to this post</h5>
-            <h5 class='pl-2 text-warning' id="plus"> + </h5>
-        </div>
     </div>
-{% else %}
-<div class="container d-flex">
-    <div class="ml-auto">
-        <h5 class="pr-2">Login to answer</h5>
-    </div>
-</div>
 {% endif %}
 <div style="min-height: 400px;">
-    <div class=" mt-2 mb-2 p-3 container card bg-light shadow">
-        <div class="d-flex">
-            <h3>{{topic.title}}</h3>
-            <div class="ml-auto">
+    <div class=" mt-2 mb-2 p-3 container card bg-light shadow" id="topic-card-{{topic.id}}">
+        <div class="d-flex justify-content-between">
+            <h3 class="mb-4">{{topic.title}}</h3>
+            <div class="d-flex">
+                
+                {% if user == topic.author or user.is_staff %}
+                <div class="d-flex mr-4">
+                    <span id="edit-{{topic.id}}" 
+                    data-toggle="modal" data-target="#topic_modal"
+                        onclick="editTopic('{{topic.id}}')" 
+                        class=" mr-3 edit cursor">
+                        <i class="fas fa-edit"></i>
+                    </span>
+                    <span id="delete-{{topic.id))" 
+                    onclick="deleteConfirmation('topic','{{topic.id}}')"
+                        class=" ml-2 delete cursor">
+                        <i class="fas fa-trash-alt"></i>
+                    </span>
+                </div>
+                {% endif %}
+                
                 <div class="d-flex align-contents-center">
                     <p class="pr-2"><a class="text-decoration-none" href="{% url 'profile' topic.author %}">{{topic.author}}</a></p>
                     <p class="pl-2">{{topic.timestamp}}</p>
                 </div>
             </div>
         </div>
-        <div class="pl-3">
+        <div id="topic-body" class="pl-3">
             {{topic.body|safe}}
         </div>
     </div>
     {% for answer in answers %}
-    <div class="container card bg-light shadow mb-2" >
-        <div class="d-flex">
+    <div class="container card bg-light shadow mb-2" id="answer-card-{{answer.id}}" >
+        <div class="d-flex justify-content-between">
             <div class="pt-2 pb-2">
               <strong><a class="text-decoration-none" href="{% url 'profile' answer.responder %}">{{answer.responder}}</a></strong> Responded:
             </div>
-            <div class="ml-auto pt-2 pb-2">
-                {{answer.timestamp}}
+            <div class="d-flex align-items-baseline">
+                <div class="d-flex mr-4 pt-2">
+                    {% if user == answer.responder or user.is_staff%}
+                    <span id="edit-{{answer.id}}" 
+                    data-toggle="modal" data-target="#answer_modal"
+                        onclick="editAnswer('{{answer.id}}')" 
+                        class=" mr-3 edit cursor">
+                        <i class="fas fa-edit"></i>
+                    </span>
+                    <span id="delete-{{answer.id))" 
+                    onclick="deleteConfirmation('answer','{{answer.id}}')"
+                        class=" ml-2 delete cursor">
+                        <i class="fas fa-trash-alt"></i>
+                    </span>
+                    {% if user == topic.author and not answer.correct %}
+                        <span class="cursor text-success ml-3 correct" onclick="correctAnswer('{{answer.id}}', false)">
+                            <i class="fas fa-check"></i>
+                        </span>
+                    {% elif user == topic.author and answer.correct%}
+                        <span class="cursor text-secondary ml-3 correct" onclick="correctAnswer('{{answer.id}}', true)">
+                            <i class="fas fa-times"></i>
+                        </span>
+                    {% endif %}
+                {% endif %}
+                </div>
+                <div class=" pt-2 pb-2">
+                    {{answer.timestamp}}
+                </div>
             </div>
+            
         </div>
-        <div class="pl-3">
-            {{answer.answer|safe}}
+        <div class="d-flex align-content-between align-items-center mt-2 mb-2">
+            {% if answer.correct %}
+                <div class="pr-2">
+                    <h1 class=" text-success"><strong><i class="fas fa-check"></i></strong></h1>
+                    <p class="text-success">Correct <br> Answer</p>
+                </div>
+            {% endif %}
+            <div class="pl-3 pb-3" id="answer-body-{{answer.id}}">
+                {{answer.answer|safe}}
+            </div>
+            <div class="ml-auto mr-3">
+                <div class="mr-1 text-info">
+                    <h3 class="cursor" onclick="upVote('{{answer.id}}')"><i class="far fa-hand-point-up"></i></h3>
+                </div>
+                <div>
+                    <h3 id="votes_count" class=" text-center">{{answer.votes}}</h3>
+                </div>
+                <div class="mr-1 text-warning">
+                    <h3 class="cursor" onclick="downVote('{{answer.id}}')"><i class="far fa-hand-point-down"></i></h3>
+                </div>
+
+            </div>
         </div>
     </div>
     {% endfor %}
 </div>
-    <div class="container mt-3 mb-4 text-center" id="answer-form-div">
-        <div class="w-100 d-flex">
-            <h3 class="ml-auto" style="cursor: pointer;" onclick="showForm()" >
-            &#9746</h3>
-        </div>
-        <form class="w-100" action="{% url 'topic' topic.id %}" method="post">
-        {% csrf_token %}
-            {{answerForm.media}}
-            {{answerForm.as_p}}
-            <button class="btn btn-light" type="submit"> Submit</button>
+   
+
+
+    <div id="topic_modal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-xl">
+      
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+               <h4 class="modal-title">Edit Topic</h4>
+            </div>
+            <form id="editor" method="post" enctype="multipart/form-data">
+                {% csrf_token%}
+                <div class="modal-body text-center">
+                    <div>
+                        <div>
+                            {{topicForm.media}}
+                            {{topicForm.as_p}}
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <button class="btn btn-primary" type="submit">Edit Topic</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
         </form>
+        </div>
+      </div>
+    
+</div>    
+    
+
+<div id="answer_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-xl">
+  
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+           <h4 class="modal-title">Answer to {{topic.title}} topic</h4>
+        </div>
+        <form id="answer" method="post" enctype="multipart/form-data">
+            {% csrf_token%}
+            <div class="modal-body text-center">
+                <div>
+                    <div id="cazzo">
+                        {{answerForm.media}}
+                        {{answerForm.as_p}}
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <button class="btn btn-primary" type="submit">Edit Topic</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </form>
     </div>
+  </div>
+
+</div>    
+
 
 {% endblock %}

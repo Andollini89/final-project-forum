@@ -1,0 +1,89 @@
+body{
+    background:whitesmoke;
+}
+.card-size{
+    width: 50%;
+    height: 45vh;
+    padding: 5%;
+    box-shadow: 5px 5px 10px rgb(83, 83, 83);
+    border-radius: 15px;
+}
+
+.text-size{
+    font-size: 2.5vw;
+}
+.text-size-smaller{
+    font-size: 1.5vw;
+}
+.text-size-bigger{
+    font-size: 3.5vw;
+}
+.arrows{
+    color: rgb(110, 110, 110);
+    font-size: 3vw;
+}
+#block-1{
+background-color: rgba(0, 0, 0, 0.800)
+}
+#block-2{
+background-color: rgba(0, 128, 214, 0.8);
+}
+#block-3{
+background-color: rgba(255, 8, 0, 0.8);
+}
+#block-4{
+background-color: rgba(1, 184, 10, 0.8);
+}
+#search-bar{
+    display: none;
+}
+
+@media only screen and (max-width:1000px) {
+    .card-size{
+        width: 100%;
+        padding: 8vh;
+    }
+    .text-size{
+        font-size: 4vh;
+    }
+    .text-size-smaller{
+        font-size: 3vh;
+    }
+    .text-size-bigger{
+        font-size: 5vh;
+    }
+    .arrows{
+        font-size: 5vh;
+    }
+    #new-topic-btn{
+        font-size: 1.3vh;
+    }
+}
+
+@media only screen and (max-width:400px){
+    .text-size{
+        font-size: 3.5vh;
+    }
+    .text-size-smaller{
+        font-size: 2.5vh;
+    }
+    .text-size-bigger{
+        font-size: 4.5vh;
+    }
+    .arrows{
+        font-size: 5vh;
+    }
+
+    #block-1{
+        padding: 4vh;
+    }
+    #block-2{
+        padding: 4vh;
+    }
+    #block-3{
+        padding: 4vh;
+    }
+    #block-4{
+        padding: 4vh;
+    }
+}

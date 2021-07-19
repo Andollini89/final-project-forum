@@ -1,0 +1,55 @@
+{% extends 'app/layout.html'%}
+{% load static %}
+
+{% block link %}
+<link rel="stylesheet" href="{% static 'css/topic_page.css'%}">
+{% endblock %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block body %}
+    <div class="container mt-1 mb-5">
+        <h2>{{title}}</h2>
+    </div>
+
+
+    {% for topic in topics%}
+        <div class="container card bg-transparent shadow mb-2 " id="{{topic.id}}">
+            <div class=" pl-2 pt-2">
+                <h3><a class=" text-decoration-none" href="{% url 'topic' topic.id %}">{{topic.title}}</a></h3>
+            </div>
+            <div class="pl-2" >
+                <p id="body-topic">{{topic.body|safe}}</p>
+            </div>
+            <div class="pl-2 d-flex">
+                <div class="pr-2">
+                    <p>{{topic.timestamp}}</p>
+                </div>
+                <div class="pl-2">
+                    <p><a class="text-decoration-none" href="{% url 'profile' topic.author.username %}">{{topic.author.username}}</a></p>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    <div class="pagination justify-content-center p-2">
+        <span class="step-pnks">
+            {% if topics.has_previous %}
+                <a class="btn btn-outline-primary" href="?page=1">&laquo; First</a>
+                <a class="btn btn-outline-primary" href="?page={{ topics.previous_page_number }}">Previous</a>
+            {% endif %}
+    
+            <span class="current btn-outline-primary">
+                Page {{ topics.number }} of {{ topics.paginator.num_pages }}.
+            </span>
+    
+            {% if topics.has_next %}
+                <a class="btn btn-outline-primary" href="?page={{ topics.next_page_number }}">Next</a>
+                <a class="btn btn-outline-primary" href="?page={{ topics.paginator.num_pages }}">Last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+
+    
+{% endblock %}

@@ -14,13 +14,32 @@
 
 {% block body %}
     <div class="container" style="min-height: 60vh !important;">
+    {% if message %}
+    <div class="container">
+        <h3>
+            {{message}}
+        </h3>
+    </div>
+    {% endif %}
     {% for topic in results %}
-        <div class="m-2 d-flex">
-            <a class="pr-5 text-decoration-none" href="{% url 'topic' topic.id %}"><strong>{{topic.title}}:</strong></a>
-            <p>{{ topic.body|safe }}</p>
-            <div class="ml-auto d-flex">
-                <p class="pr-4"><strong>{{topic.author.username}}</strong></p>
-                <p>{{topic.timestamp}}</p>
+        <div class=" card bg-light bg-gradient shadow m-1">
+            <div class="row">
+                <div class="col-8 p-2 ">
+                    <a class="text-decoration-none" href="{% url 'topic' topic.id %}">
+                        <h4 class="pl-3"><strong>{{topic.title}}</strong></h4>
+                    </a>
+                </div>
+                <div class="col-4 pl-5">
+                    <div class="d-flex p-2 ml-auto">
+                        <p class="pr-4"><strong>{{topic.author.username}}</strong></p>
+                        <p>{{topic.timestamp}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-11 pb-2">
+                    <h6 class="pl-3">{{ topic.body|safe }}</h6>
+                </div>
             </div>
         </div>
     {% endfor %}

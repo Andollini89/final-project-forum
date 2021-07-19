@@ -17,11 +17,19 @@
 .main-div{
     display: flex;
 }
+.user-image{
+    padding: 5% 4% 10% 4% ;
+    max-width: 100%;
+}
+.user-image > img{
+    width: 18vw;
+    height: 18vw;
+}
 #editor{
     display: none;
 }
-#django-ckeditor-widget{
-    max-width: 80vw;
+.django-ckeditor-widget{
+    max-width: 100%;
 }
 #cke_id_body{
     max-width: 45vw;

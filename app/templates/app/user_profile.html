@@ -17,18 +17,20 @@
 
 
 <div class="container">
-    <div class="p-1 row main-div">
-        <div class="mr-2  card col-3 text-center bg-gradient sfondo">
+    <div class="p-1 m-3 row main-div">
+        <div class="mr-2 card col-sm-12 col-md-3 col-lg-3 col-xl-3 text-center bg-gradient sfondo">
+            {% if user == profile.user %}
             <div class="d-flex ml-auto pt-2 " >
                 <a href="{% url 'edit_profile' profile.id %}">
                     <i class="cursor mr-3 edit cursor fas fa-edit"></i>
                 </a>
             </div>
-            <div class="p-1 pb-4">
+            {% endif %}
+            <div class="user-image">
                 {% if profile.image %}
-                    <img class="rounded-circle" src="{{MEDIA_URL}}{{profile.image}}" alt="" width="250px" height="250px">
+                    <img class="rounded-circle" src="{{MEDIA_URL}}{{profile.image}}" alt="" >
                 {% else %}
-                    <img class="rounded-circle shadow" src="{{MEDIA_URL}}avatar.jpg" alt="" width="250px">
+                    <img class="rounded-circle shadow" src="{{MEDIA_URL}}avatar.jpg" alt="" >
                 {% endif %}
             </div>
             <div class="p-1">
@@ -45,7 +47,8 @@
                 {{profile.timestamp}}</p>
             </div>
         </div>
-        <div class="col-8 ml-2">
+        <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8 
+                ml-md-2 ml-sm-0 ml-lg-2 ml-xl_2">
             {% for topic in topics %}
                 <div class="card mb-3 shadow" id="topic-card-{{topic.id}}">
                     <div class="card-header d-flex justify-content-between">
@@ -54,6 +57,7 @@
                                 <a href="{% url 'topic' topic.id %}">{{topic.title}}</a>
                             </strong>
                         </div>
+                        {% if user == topic.author %}
                         <div class="d-flex">
                             <span id="edit-{{topic.id}}" 
                             data-toggle="modal" data-target="#myModal"
@@ -67,6 +71,7 @@
                                 <i class="fas fa-trash-alt"></i>
                             </span>
                         </div>
+                        {% endif %}
                     </div>
                     <div class="card-body" id="body{{topic.id}}">{{topic.body|safe}}</div>
                     

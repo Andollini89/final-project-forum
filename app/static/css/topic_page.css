@@ -1,6 +1,19 @@
+@import 'user.css';
+
+.edit, .delete{
+    font-size: initial;
+}
+
+.correct{
+    font-size: large;
+}
 #plus, .cursor{
     cursor: pointer;
 }
 #answer-form-div{
     display: none;
 }
+#cke_id_answer{
+    max-width: 45vw;
+}
+

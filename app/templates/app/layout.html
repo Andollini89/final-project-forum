@@ -35,13 +35,13 @@
                 <div class="collapse navbar-collapse" id="collapsibleNavbar">
                   <ul class="navbar-nav">
                     <li class="nav-item">
-                      <a class="nav-link" href="#">Top Voted</a>
+                      <a class="nav-link" href="{% url 'open_topics'%}">Open questions</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="#">Categories</a>
+                      <a class="nav-link" href="{% url 'closed_topics'%}">Closed questions</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="#">All Topics</a>
+                      <a class="nav-link" href="{% url 'all_topics' %}">All Topics</a>
                     </li>
                     <li class="nav-item">
                       <a class="nav-link" href="{% url 'new_topic' %}">Make New Topic</a>
@@ -70,24 +70,26 @@
                 </div>
               </nav>
         </div>
-        <div class="container p-5 d-flex">
-          <div>
-              <form class=" form-inline" action="{% url 'search' %}" method="get">
-                  <input class=" form-control border-dark mr-2 shadow" type="text" name="query" id="q" placeholder="Search Topic" value="{{query}}">
-                  <button class=" btn btn-primary shadow" type="submit">Search</button>
-              </form>
+        <div id="search-bar">
+          <div class="container-lg p-5 d-flex justify-content-between">
+            <div class="mr-sm-5">
+                <form class=" form-inline" action="{% url 'search' %}" method="get">
+                    <input class=" form-control border-dark mr-2 shadow" type="text" name="query" id="q" placeholder="Search Topic" value="{{query}}">
+                    <button class=" btn btn-primary shadow" type="submit">Search</button>
+                </form>
+            </div>
+            {% if not user.is_authenticated%}
+            <div class="ml-sm-5 d-flex ">
+                <form class="form-inline" action="{% url 'login'%}" method="post">
+                    {% csrf_token %}
+                    <input class=" form-control border-dark mr-2 shadow" type="text" name="username" placeholder="Username">
+                    <input class=" form-control border-dark mr-2 shadow" type="password" name="password" id="" placeholder="Password">
+                    <button class="btn btn-secondary shadow" type="submit">Log in</button>
+                </form>
+            </div>
+            {% endif %}
           </div>
-          {% if not user.is_authenticated%}
-          <div class="ml-auto d-flex ">
-              <form class="form-inline" action="{% url 'login'%}" method="post">
-                  {% csrf_token %}
-                  <input class=" form-control border-dark mr-2 shadow" type="text" name="username" placeholder="Username">
-                  <input class=" form-control border-dark mr-2 shadow" type="password" name="password" id="" placeholder="Password">
-                  <button class="btn btn-secondary shadow" type="submit">Log in</button>
-              </form>
-          </div>
-          {% endif %}
-      </div>
+        </div>
         {% block body%}
         {% endblock %}
     </body>
