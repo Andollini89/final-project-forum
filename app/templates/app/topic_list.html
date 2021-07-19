@@ -13,7 +13,7 @@
     <div class="container mt-1 mb-5">
         <h2>{{title}}</h2>
     </div>
-
+{% if topics %}
 
     {% for topic in topics%}
         <div class="container card bg-transparent shadow mb-2 " id="{{topic.id}}">
@@ -51,5 +51,10 @@
         </span>
     </div>
 
+    {% else %}
+    <div class="container">
+        <h3>{{message}}</h3>
+    </div>
+    {% endif %}
     
 {% endblock %}

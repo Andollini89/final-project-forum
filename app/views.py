@@ -42,8 +42,8 @@ def closed_topics(request):
         })
     except:
         return render(request, "app/topic_list.html", {
-            'title': 'All Topics',
-            'topics' : 'No topics to show!',
+            'title': 'Closed Topics',
+            'message' : 'No topics to show!',
         })
 
 def open_topics(request):
@@ -58,8 +58,8 @@ def open_topics(request):
         })
     except:
         return render(request, "app/topic_list.html", {
-            'title': 'All Topics',
-            'topics' : 'No topics to show!',
+            'title': 'Open Topics',
+            'message' : 'No topics to show!',
         })
 
 def all_topics(request):
@@ -75,7 +75,7 @@ def all_topics(request):
     except:
         return render(request, "app/topic_list.html", {
             'title': 'All Topics',
-            'topics' : 'No topics to show!',
+            'message' : 'No topics to show!',
         })
 
 
