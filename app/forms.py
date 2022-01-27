@@ -18,6 +18,7 @@ class TopicForm( ModelForm):
         labels = {
             "body": _("Write here:")
         }
+
 class AnswerForm(ModelForm):
     class Meta:
         model = Answer
@@ -25,7 +26,7 @@ class AnswerForm(ModelForm):
         labels = {
             "answer": ""
         }
-
+        
 class BodyForm(ModelForm):
     class Meta:
         model = Topic
